@@ -40,8 +40,8 @@ spec:
             - -ec
             - |
               mkdir -p /home/node/.openclaw /home/node/.openclaw/workspace
-              if [ ! -f {{ .Values.bootstrapConfig.filePath | quote }} ]; then
-                printf '%s\n' '{"gateway":{"mode":"{{ .Values.bootstrapConfig.gatewayMode }}"}}' > {{ .Values.bootstrapConfig.filePath | quote }}
+              if [ ! -f {{ .Values.bootstrapConfig.filePath | quote }} ]{{- if .Values.bootstrapConfig.reconcileControlUiFallback }} || ! grep -q 'dangerouslyAllowHostHeaderOriginFallback' {{ .Values.bootstrapConfig.filePath | quote }}{{- end }}; then
+                printf '%s\n' '{"gateway":{"mode":"{{ .Values.bootstrapConfig.gatewayMode }}","controlUi":{"dangerouslyAllowHostHeaderOriginFallback":{{ ternary "true" "false" .Values.bootstrapConfig.controlUi.dangerouslyAllowHostHeaderOriginFallback }}}}}' > {{ .Values.bootstrapConfig.filePath | quote }}
               fi
           volumeMounts:
             - name: config

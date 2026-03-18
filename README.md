@@ -25,6 +25,8 @@ helm upgrade --install openclaw . \
 - Set gateway bind mode command: `--set-json 'command=["node","dist/index.js","gateway","--bind","lan","--port","18789"]'`
 - Disable config bootstrap init container: `--set bootstrapConfig.enabled=false`
 - Change bootstrap gateway mode: `--set bootstrapConfig.gatewayMode=local`
+- Disable host-header origin fallback bootstrap: `--set bootstrapConfig.controlUi.dangerouslyAllowHostHeaderOriginFallback=false`
+- Disable reconciliation of legacy config files: `--set bootstrapConfig.reconcileControlUiFallback=false`
 - Disable startup config-file gate probe: `--set startupProbe.enabled=false`
 - Enable persisted state/workspace: `--set persistence.config.enabled=true --set persistence.workspace.enabled=true`
 - Disable managed token secret (not recommended): `--set gatewayToken.enabled=false`
@@ -33,7 +35,7 @@ helm upgrade --install openclaw . \
 - Enable autoscaling: `--set autoscaling.enabled=true --set autoscaling.maxReplicas=10`
 
 By default the chart creates a Secret and injects `OPENCLAW_GATEWAY_TOKEN` into the gateway container. If no token value is provided, Helm generates one.
-By default the chart also runs an init container that seeds `/home/node/.openclaw/openclaw.json` with `gateway.mode=local` when the file is missing.
+By default the chart also runs an init container that seeds `/home/node/.openclaw/openclaw.json` with `gateway.mode=local` and `gateway.controlUi.dangerouslyAllowHostHeaderOriginFallback=true`.
 
 You can also place overrides in a custom values file:
 

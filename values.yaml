@@ -80,6 +80,9 @@ bootstrapConfig:
   enabled: true
   gatewayMode: local
   filePath: /home/node/.openclaw/openclaw.json
+  reconcileControlUiFallback: true
+  controlUi:
+    dangerouslyAllowHostHeaderOriginFallback: true
 
 persistence:
   config:
