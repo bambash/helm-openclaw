@@ -76,6 +76,11 @@ gatewayToken:
   secretKey: OPENCLAW_GATEWAY_TOKEN
   value: ""
 
+bootstrapConfig:
+  enabled: true
+  gatewayMode: local
+  filePath: /home/node/.openclaw/openclaw.json
+
 persistence:
   config:
     enabled: false

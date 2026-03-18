@@ -30,6 +30,27 @@ spec:
       serviceAccountName: {{ include "openclaw.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if .Values.bootstrapConfig.enabled }}
+      initContainers:
+        - name: bootstrap-config
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /bin/sh
+            - -ec
+            - |
+              mkdir -p /home/node/.openclaw /home/node/.openclaw/workspace
+              if [ ! -f {{ .Values.bootstrapConfig.filePath | quote }} ]; then
+                cat > {{ .Values.bootstrapConfig.filePath | quote }} <<'EOF'
+                {"gateway":{"mode":"{{ .Values.bootstrapConfig.gatewayMode }}"}}
+                EOF
+              fi
+          volumeMounts:
+            - name: config
+              mountPath: /home/node/.openclaw
+            - name: workspace
+              mountPath: /home/node/.openclaw/workspace
+      {{- end }}
       containers:
         - name: {{ include "openclaw.name" . }}
           securityContext:

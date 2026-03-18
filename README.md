@@ -23,6 +23,8 @@ helm upgrade --install openclaw . \
 
 - Set replicas: `--set replicaCount=2`
 - Set gateway bind mode command: `--set-json 'command=["node","dist/index.js","gateway","--bind","lan","--port","18789"]'`
+- Disable config bootstrap init container: `--set bootstrapConfig.enabled=false`
+- Change bootstrap gateway mode: `--set bootstrapConfig.gatewayMode=local`
 - Enable persisted state/workspace: `--set persistence.config.enabled=true --set persistence.workspace.enabled=true`
 - Disable managed token secret (not recommended): `--set gatewayToken.enabled=false`
 - Use existing token secret: `--set gatewayToken.existingSecret=openclaw-token --set gatewayToken.secretKey=OPENCLAW_GATEWAY_TOKEN`
@@ -30,6 +32,7 @@ helm upgrade --install openclaw . \
 - Enable autoscaling: `--set autoscaling.enabled=true --set autoscaling.maxReplicas=10`
 
 By default the chart creates a Secret and injects `OPENCLAW_GATEWAY_TOKEN` into the gateway container. If no token value is provided, Helm generates one.
+By default the chart also runs an init container that seeds `/home/node/.openclaw/openclaw.json` with `gateway.mode=local` when the file is missing.
 
 You can also place overrides in a custom values file:
 
