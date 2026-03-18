@@ -116,3 +116,14 @@ readinessProbe:
   periodSeconds: 10
   timeoutSeconds: 5
   failureThreshold: 3
+
+startupProbe:
+  enabled: true
+  exec:
+    command:
+      - /bin/sh
+      - -ec
+      - test -f /home/node/.openclaw/openclaw.json
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 30

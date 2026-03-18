@@ -41,9 +41,7 @@ spec:
             - |
               mkdir -p /home/node/.openclaw /home/node/.openclaw/workspace
               if [ ! -f {{ .Values.bootstrapConfig.filePath | quote }} ]; then
-                cat > {{ .Values.bootstrapConfig.filePath | quote }} <<'EOF'
-                {"gateway":{"mode":"{{ .Values.bootstrapConfig.gatewayMode }}"}}
-                EOF
+                printf '%s\n' '{"gateway":{"mode":"{{ .Values.bootstrapConfig.gatewayMode }}"}}' > {{ .Values.bootstrapConfig.filePath | quote }}
               fi
           volumeMounts:
             - name: config
@@ -68,6 +66,10 @@ spec:
             - name: bridge
               containerPort: {{ .Values.service.bridgeTargetPort }}
               protocol: TCP
+          {{- if .Values.startupProbe.enabled }}
+          startupProbe:
+            {{- toYaml (omit .Values.startupProbe "enabled") | nindent 12 }}
+          {{- end }}
           {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             {{- toYaml (omit .Values.livenessProbe "enabled") | nindent 12 }}

@@ -25,6 +25,7 @@ helm upgrade --install openclaw . \
 - Set gateway bind mode command: `--set-json 'command=["node","dist/index.js","gateway","--bind","lan","--port","18789"]'`
 - Disable config bootstrap init container: `--set bootstrapConfig.enabled=false`
 - Change bootstrap gateway mode: `--set bootstrapConfig.gatewayMode=local`
+- Disable startup config-file gate probe: `--set startupProbe.enabled=false`
 - Enable persisted state/workspace: `--set persistence.config.enabled=true --set persistence.workspace.enabled=true`
 - Disable managed token secret (not recommended): `--set gatewayToken.enabled=false`
 - Use existing token secret: `--set gatewayToken.existingSecret=openclaw-token --set gatewayToken.secretKey=OPENCLAW_GATEWAY_TOKEN`
